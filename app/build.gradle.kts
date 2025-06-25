@@ -5,7 +5,11 @@ plugins {
 
 android {
     namespace = "com.example.dictionary"
-    compileSdk = 35
+    compileSdk = 36
+
+    buildFeatures {
+        viewBinding = true
+    }
 
     defaultConfig {
         applicationId = "com.example.dictionary"
@@ -36,7 +40,6 @@ android {
 }
 
 dependencies {
-
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
