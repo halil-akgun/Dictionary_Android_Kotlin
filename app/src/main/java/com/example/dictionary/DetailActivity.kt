@@ -21,5 +21,9 @@ class DetailActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+
+        val word = intent.getSerializableExtra("word") as Word
+        binding.textViewEnglishDetail.text = word.english
+        binding.textViewTurkishDetail.text = word.turkish
     }
 }

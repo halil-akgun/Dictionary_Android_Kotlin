@@ -1,14 +1,17 @@
 package com.example.dictionary
 
 import android.os.Bundle
+import android.util.Log
+import android.view.Menu
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.SearchView
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.dictionary.databinding.ActivityMainBinding
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener {
 
     private lateinit var binding: ActivityMainBinding
     private lateinit var wordList: ArrayList<Word>
@@ -67,5 +70,27 @@ class MainActivity : AppCompatActivity() {
 
         wordAdapter = WordAdapter(this, wordList)
         binding.rv.adapter = wordAdapter
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.toolbar_menu, menu)
+
+        val searchItem = menu?.findItem(R.id.action_search)
+        val searchView = searchItem?.actionView as SearchView
+        searchView.setOnQueryTextListener(this)
+
+        return super.onCreateOptionsMenu(menu)
+    }
+
+    // it runs when text is submitted
+    override fun onQueryTextSubmit(query: String?): Boolean {
+        Log.d("onQueryTextSubmit", query.toString())
+        return true
+    }
+
+    // it runs when text is changed
+    override fun onQueryTextChange(newText: String?): Boolean {
+        Log.d("onQueryTextChange", newText.toString())
+        return true
     }
 }
