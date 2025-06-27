@@ -28,6 +28,8 @@ class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener {
             insets
         }
 
+        copyDatabase()
+
         binding.toolbar.title = "Dictionary"
         setSupportActionBar(binding.toolbar)
 
@@ -92,5 +94,16 @@ class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener {
     override fun onQueryTextChange(newText: String?): Boolean {
         Log.d("onQueryTextChange", newText.toString())
         return true
+    }
+
+    private fun copyDatabase() {
+        val dbCopyHelper = DatabaseCopyHelper(this)
+
+        try {
+            dbCopyHelper.createDataBase()
+            dbCopyHelper.openDataBase()
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
     }
 }
