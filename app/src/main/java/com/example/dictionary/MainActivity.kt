@@ -57,12 +57,14 @@ class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener {
 
     // it runs when text is submitted
     override fun onQueryTextSubmit(query: String?): Boolean {
+        searchWord(query.toString())
         Log.d("onQueryTextSubmit", query.toString())
         return true
     }
 
     // it runs when text is changed
     override fun onQueryTextChange(newText: String?): Boolean {
+        searchWord(newText.toString())
         Log.d("onQueryTextChange", newText.toString())
         return true
     }
@@ -76,5 +78,11 @@ class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener {
         } catch (e: Exception) {
             e.printStackTrace()
         }
+    }
+
+    private fun searchWord(word: String) {
+        wordList = WordDao().searchWord(db, word)
+        wordAdapter = WordAdapter(this, wordList)
+        binding.rv.adapter = wordAdapter
     }
 }
