@@ -16,6 +16,7 @@ class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener {
     private lateinit var binding: ActivityMainBinding
     private lateinit var wordList: ArrayList<Word>
     private lateinit var wordAdapter: WordAdapter
+    private lateinit var db: DatabaseHelper
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,39 +37,9 @@ class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener {
         binding.rv.setHasFixedSize(true)
         binding.rv.layoutManager = LinearLayoutManager(this)
 
-        wordList = ArrayList()
+        db = DatabaseHelper(this)
 
-        wordList.add(Word(1, "Hello", "Merhaba"))
-        wordList.add(Word(2, "Yes", "Evet"))
-        wordList.add(Word(3, "No", "Hayır"))
-        wordList.add(Word(4, "Good", "İyi"))
-        wordList.add(Word(5, "Bad", "Kötü"))
-        wordList.add(Word(6, "Thank you", "Teşekkürler"))
-        wordList.add(Word(7, "Goodbye", "Görüşmek üzere"))
-        wordList.add(Word(8, "See you", "Görüşürüz"))
-        wordList.add(Word(9, "Please", "Lütfen"))
-        wordList.add(Word(10, "Car", "Araba"))
-        wordList.add(Word(11, "Bus", "Otobüs"))
-        wordList.add(Word(12, "Bicycle", "Tren"))
-        wordList.add(Word(13, "Motorcycle", "Motosiklet"))
-        wordList.add(Word(14, "Train", "Tren"))
-        wordList.add(Word(15, "Taxi", "Taksi"))
-        wordList.add(Word(16, "Plane", "Uçak"))
-        wordList.add(Word(17, "Computer", "Bilgisayar"))
-        wordList.add(Word(18, "Phone", "Telefon"))
-        wordList.add(Word(19, "Table", "Masa"))
-        wordList.add(Word(20, "Chair", "Sırt"))
-        wordList.add(Word(21, "Book", "Kitap"))
-        wordList.add(Word(22, "Pen", "Kalem"))
-        wordList.add(Word(23, "Pencil", "Kalem"))
-        wordList.add(Word(24, "Notebook", "Defter"))
-        wordList.add(Word(25, "Laptop", "Laptop"))
-        wordList.add(Word(26, "Mouse", "Mause"))
-        wordList.add(Word(27, "Keyboard", "Klavye"))
-        wordList.add(Word(28, "Monitor", "Ekran"))
-        wordList.add(Word(29, "Earphones", "Kulaklık"))
-        wordList.add(Word(30, "Mobile phone", "Cep telefonu"))
-        wordList.add(Word(31, "Headphones", "Kulaklık"))
+        wordList = WordDao().allWords(db)
 
         wordAdapter = WordAdapter(this, wordList)
         binding.rv.adapter = wordAdapter
