@@ -19,10 +19,29 @@ class WordDao {
         return wordList
     }
 
-    fun searchWord(dbHelper: DatabaseHelper, word: String): ArrayList<Word> {
+    fun searchWord(
+        dbHelper: DatabaseHelper,
+        word: String,
+        isEnglish: Boolean,
+        isTurkish: Boolean
+    ): ArrayList<Word> {
         val wordList = ArrayList<Word>()
         val db = dbHelper.writableDatabase
-        val cursor = db.rawQuery("SELECT * FROM dictionary WHERE english LIKE '%$word%'", null)
+
+        val selection = when {
+            isEnglish && isTurkish -> "english LIKE ? OR turkish LIKE ?"
+            isEnglish -> "english LIKE ?"
+            isTurkish -> "turkish LIKE ?"
+            else -> return wordList
+        }
+
+        val args = when {
+            isEnglish && isTurkish -> arrayOf("%$word%", "%$word%")
+            else -> arrayOf("%$word%")
+        }
+
+        val cursor = db.rawQuery("SELECT * FROM dictionary WHERE $selection", args)
+
         while (cursor.moveToNext()) {
             val word = Word(
                 cursor.getColumnIndex("id"),

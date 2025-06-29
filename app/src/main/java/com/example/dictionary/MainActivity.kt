@@ -17,6 +17,9 @@ class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener {
     private lateinit var wordList: ArrayList<Word>
     private lateinit var wordAdapter: WordAdapter
     private lateinit var db: DatabaseHelper
+    private lateinit var searchView: SearchView
+    private var isEnglish = true
+    private var isTurkish = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,6 +44,17 @@ class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener {
 
         wordList = WordDao().allWords(db)
 
+        binding.checkBoxEn.setOnCheckedChangeListener { _, isChecked ->
+            isEnglish = isChecked
+            val currentQuery = searchView.query.toString()
+            searchWord(currentQuery)
+        }
+        binding.checkBoxTr.setOnCheckedChangeListener { _, isChecked ->
+            isTurkish = isChecked
+            val currentQuery = searchView.query.toString()
+            searchWord(currentQuery)
+        }
+
         wordAdapter = WordAdapter(this, wordList)
         binding.rv.adapter = wordAdapter
     }
@@ -49,22 +63,23 @@ class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener {
         menuInflater.inflate(R.menu.toolbar_menu, menu)
 
         val searchItem = menu?.findItem(R.id.action_search)
-        val searchView = searchItem?.actionView as SearchView
+        searchView = searchItem?.actionView as SearchView
         searchView.setOnQueryTextListener(this)
 
-        return super.onCreateOptionsMenu(menu)
+        return true
+//        return super.onCreateOptionsMenu(menu)
     }
 
     // it runs when text is submitted
     override fun onQueryTextSubmit(query: String?): Boolean {
-        searchWord(query.toString())
+        searchWord(query.orEmpty())
         Log.d("onQueryTextSubmit", query.toString())
         return true
     }
 
     // it runs when text is changed
     override fun onQueryTextChange(newText: String?): Boolean {
-        searchWord(newText.toString())
+        searchWord(newText.orEmpty())
         Log.d("onQueryTextChange", newText.toString())
         return true
     }
@@ -81,7 +96,7 @@ class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener {
     }
 
     private fun searchWord(word: String) {
-        wordList = WordDao().searchWord(db, word)
+        wordList = WordDao().searchWord(db, word, isEnglish, isTurkish)
         wordAdapter = WordAdapter(this, wordList)
         binding.rv.adapter = wordAdapter
     }
