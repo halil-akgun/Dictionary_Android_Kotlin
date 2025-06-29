@@ -18,6 +18,27 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <CheckBox
+        android:id="@+id/checkBoxEn"
+        android:layout_width="wrap_content"
+        android:layout_height="30dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="55dp"
+        android:checked="true"
+        android:text="En"
+        app:layout_constraintEnd_toEndOf="@+id/toolbar"
+        app:layout_constraintTop_toTopOf="@+id/toolbar" />
+
+    <CheckBox
+        android:id="@+id/checkBoxTr"
+        android:layout_width="wrap_content"
+        android:layout_height="30dp"
+        android:layout_marginTop="27dp"
+        android:layout_marginEnd="55dp"
+        android:text="Tr"
+        app:layout_constraintEnd_toEndOf="@+id/toolbar"
+        app:layout_constraintTop_toTopOf="@+id/toolbar" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv"
         android:layout_width="0dp"
